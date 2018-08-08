@@ -1,1 +1,1 @@
-# A playground for creating HTML, CSS, and Javascript elements
+A playground for creating HTML, CSS, and Javascript elements
