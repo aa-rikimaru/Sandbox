@@ -14,6 +14,11 @@
       overflow: auto;
       box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.14) inset, 1px 3px 3px rgba(0, 0, 0, 0.28) inset,
       -1px -1px 2px rgba(0, 0, 0, 0.14) inset, -1px -2px 3px rgba(0, 0, 0, 0.28) inset;
+      -webkit-box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.14) inset, 1px 3px 3px rgba(0, 0, 0, 0.28) inset,
+      -1px -1px 2px rgba(0, 0, 0, 0.14) inset, -1px -2px 3px rgba(0, 0, 0, 0.28) inset;
+      -moz-box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.14) inset, 1px 3px 3px rgba(0, 0, 0, 0.28) inset,
+      -1px -1px 2px rgba(0, 0, 0, 0.14) inset, -1px -2px 3px rgba(0, 0, 0, 0.28) inset;
+
     }
 
     .draggable-container {
@@ -22,6 +27,24 @@
       height: 150px;
       padding: 5px;
       border: 3px solid black;
+    }
+
+    .training-day {
+      height: 650px;
+      width: 250px;
+      background-color: blue;
+      margin: 10px;
+      border-radius: 5px;
+    }
+
+    .dropdown-content {
+      /* display: none; */
+      position: absolute;
+      width: 200px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      -webkit-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      -moz-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
     }
 
     #title:hover {
@@ -36,6 +59,8 @@
     }
   </style>
   <script>
+    var cloneCount = 0;
+
     function allowDrop(ev) {
       ev.preventDefault();
     }
@@ -45,12 +70,32 @@
     }
 
     function drop(ev) {
-      console.log(ev.dataTransfer.getData("abc"));
       // Gets the data mapped by "abc"
       var data = ev.dataTransfer.getData("abc");
       // Adds the child to the area dropped
       ev.target.appendChild(document.getElementById(data));
       ev.preventDefault();
+    }
+
+    function copyDrop(ev) {
+      var id = ev.dataTransfer.getData("abc");
+      var clone = document.getElementById(id).cloneNode(true);
+      clone.id += cloneCount++;
+      ev.target.appendChild(clone);
+    }
+
+    function openMenu(e) {
+      console.log(
+        'page: ' + e.pageX + ',' + e.pageY,
+        '\nclient: ' + e.clientX + ',' + e.clientY,
+        '\nscreen: ' + e.screenX + ',' + e.screenY,
+        '\nview: ' + e.view.x + ',' + e.view.y);
+
+      var menu = document.getElementById('workspaceMenu');
+      console.log(menu);
+      // menu.style.left = e.screenX;
+      // menu.style.top = e.screenY;
+      // menu.style.display = "block";
     }
   </script>
 </head>
@@ -61,7 +106,14 @@
       <h1 id="title"> Program Workspace </h1>
     </div>
     <div class="row">
-      <div class="program-workspace" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <div class="program-workspace" ondblclick="openMenu(event)">
+        <div class="row">
+          <div class="training-day" ondrop="copyDrop(event)" ondragover="allowDrop(event)">
+          </div>
+          <div class="training-day" ondrop="copyDrop(event)" ondragover="allowDrop(event)">
+          </div>
+        </div>
+
       </div>
 
       <div id="draggable1" class="draggable-container" draggable="true" ondragstart="drag(event)">
@@ -81,6 +133,12 @@
         </ul>
       </div>
     </div>
+  </div>
+
+  <div id="workspaceMenu" class="dropdown-content list-group">
+    <button type="button" class="btn btn-outline-primary list-group-item">Add Exercise</button>
+    <button type="button" class="btn btn-outline-primary list-group-item">Add Day</button>
+    <button type="button" class="btn btn-outline-primary list-group-item">Add Week</button>
   </div>
 
 </body>
