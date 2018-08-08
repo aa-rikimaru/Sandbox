@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Sandbox Program Workspace</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <style>
+    .program-workspace {
+      background-color: rgb(185, 185, 185, 0.2);
+      width: 100%;
+      height: 800px;
+      border-radius: 10px;
+      overflow: auto;
+      box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.14) inset, 1px 3px 3px rgba(0, 0, 0, 0.28) inset,
+      -1px -1px 2px rgba(0, 0, 0, 0.14) inset, -1px -2px 3px rgba(0, 0, 0, 0.28) inset;
+    }
+
+    .draggable-container {
+      margin: 10px;
+      width: 200px;
+      height: 150px;
+      padding: 5px;
+      border: 3px solid black;
+    }
+
+    #title:hover {
+      background-color: rgba(255, 155, 100, 0.5);
+    }
+
+    #div1 {
+      width: 350px;
+      height: 70px;
+      padding: 10px;
+      border: 1px solid #aaaaaa;
+    }
+  </style>
+  <script>
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData("abc", ev.target.id);
+    }
+
+    function drop(ev) {
+      console.log(ev.dataTransfer.getData("abc"));
+      // Gets the data mapped by "abc"
+      var data = ev.dataTransfer.getData("abc");
+      // Adds the child to the area dropped
+      ev.target.appendChild(document.getElementById(data));
+      ev.preventDefault();
+    }
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <h1 id="title"> Program Workspace </h1>
+    </div>
+    <div class="row">
+      <div class="program-workspace" ondrop="drop(event)" ondragover="allowDrop(event)">
+      </div>
+
+      <div id="draggable1" class="draggable-container" draggable="true" ondragstart="drag(event)">
+        <h3>Squats</h3>
+        <ul>
+          <li>1 x 5 @ 105</li>
+          <li>1 x 5 @ 135</li>
+          <li>1 x 5 @ 155</li>
+        </ul>
+      </div>
+      <div id="draggable2" class="draggable-container" draggable="true" ondragstart="drag(event)">
+        <h3>Bench</h3>
+        <ul>
+          <li>1 x 5 @ 75</li>
+          <li>1 x 5 @ 85</li>
+          <li>1 x 5 @ 95</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- AJAX -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+</html>
