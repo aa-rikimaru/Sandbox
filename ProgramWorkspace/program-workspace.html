@@ -6,11 +6,18 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <style>
+
+    input {
+      border: none;
+      width: 100%;
+    }
+
     .program-workspace {
       background-color: rgb(185, 185, 185, 0.2);
       width: 100%;
       height: 800px;
       border-radius: 10px;
+      padding: 5px 20px; /* vertical | horizontal */
       overflow: auto;
       box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.14) inset, 1px 3px 3px rgba(0, 0, 0, 0.28) inset,
       -1px -1px 2px rgba(0, 0, 0, 0.14) inset, -1px -2px 3px rgba(0, 0, 0, 0.28) inset;
@@ -22,29 +29,22 @@
     }
 
     .draggable-container {
-      margin: 10px;
-      width: 200px;
-      height: 150px;
+      margin: 5px;
       padding: 5px;
-      border: 3px solid black;
     }
 
     .training-day {
-      height: 650px;
+      min-height: 100px;
+      max-height: 650px;
       width: 250px;
-      background-color: blue;
-      margin: 10px;
+      background-color: rgba(159, 189, 222, 0.5);
+      margin: 2px 5px;
       border-radius: 5px;
     }
 
-    .dropdown-content {
-      /* display: none; */
-      position: absolute;
-      width: 200px;
-      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-      -webkit-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-      -moz-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-      z-index: 1;
+    .set-description {
+      font-size: 12px;
+      line-height: 1px;
     }
 
     #title:hover {
@@ -57,6 +57,23 @@
       padding: 10px;
       border: 1px solid #aaaaaa;
     }
+
+    #workspaceMenu {
+      display: none;
+      position: absolute;
+      width: 175px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      -webkit-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      -moz-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    #workspaceMenu button {
+      width: 100%;
+      line-height: 1px;
+      font-size: 12px;
+    }
+
   </style>
   <script>
     var cloneCount = 0;
@@ -85,17 +102,18 @@
     }
 
     function openMenu(e) {
-      console.log(
-        'page: ' + e.pageX + ',' + e.pageY,
-        '\nclient: ' + e.clientX + ',' + e.clientY,
-        '\nscreen: ' + e.screenX + ',' + e.screenY,
-        '\nview: ' + e.view.x + ',' + e.view.y);
-
       var menu = document.getElementById('workspaceMenu');
       console.log(menu);
-      // menu.style.left = e.screenX;
-      // menu.style.top = e.screenY;
-      // menu.style.display = "block";
+
+      menu.style.left = e.clientX + "px";
+      menu.style.top = e.clientY + "px";
+      menu.style.display = "block";
+
+      window.onclick = function(event) {
+        if (event.target != menu) {
+          menu.style.display = "none";
+        }
+      }
     }
   </script>
 </head>
@@ -113,33 +131,35 @@
           <div class="training-day" ondrop="copyDrop(event)" ondragover="allowDrop(event)">
           </div>
         </div>
-
       </div>
 
       <div id="draggable1" class="draggable-container" draggable="true" ondragstart="drag(event)">
-        <h3>Squats</h3>
-        <ul>
-          <li>1 x 5 @ 105</li>
-          <li>1 x 5 @ 135</li>
-          <li>1 x 5 @ 155</li>
-        </ul>
+
+        <div class="list-group">
+          <input class="list-group-item set-description" type="text" name="exercise" value="Squat"><br/>
+          <div class="list-group-item set-description">1 x 5 @ 75</div>
+          <div class="list-group-item set-description">1 x 5 @ 85</div>
+          <div class="list-group-item set-description">1 x 5 @ 95</div>
+        </div>
       </div>
       <div id="draggable2" class="draggable-container" draggable="true" ondragstart="drag(event)">
-        <h3>Bench</h3>
-        <ul>
-          <li>1 x 5 @ 75</li>
-          <li>1 x 5 @ 85</li>
-          <li>1 x 5 @ 95</li>
-        </ul>
+        <div class="list-group">
+          <input class="list-group-item set-description" type="text" name="exercise" value="Bench"><br/>
+          <div class="list-group-item set-description">1 x 5 @ 75</div>
+          <div class="list-group-item set-description">1 x 5 @ 85</div>
+          <div class="list-group-item set-description">1 x 5 @ 95</div>
+        </div>
       </div>
+
     </div>
   </div>
 
   <div id="workspaceMenu" class="dropdown-content list-group">
-    <button type="button" class="btn btn-outline-primary list-group-item">Add Exercise</button>
-    <button type="button" class="btn btn-outline-primary list-group-item">Add Day</button>
-    <button type="button" class="btn btn-outline-primary list-group-item">Add Week</button>
+    <button type="button" onclick="addExercise()" class="btn btn-outline-primary list-group-item">Add Exercise</button>
+    <button type="button" onclick="addTrainingDay()" class="btn btn-outline-primary list-group-item">Add Day</button>
+    <button type="button" onclick="addTrainingBlock()" class="btn btn-outline-primary list-group-item">Add Week</button>
   </div>
+
 
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
